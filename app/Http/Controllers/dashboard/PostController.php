@@ -8,7 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Traits\UploadImage;
 use Illuminate\Auth\Middleware\Authorize;
-use Yajra\DataTables\Facades\Datatables;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller

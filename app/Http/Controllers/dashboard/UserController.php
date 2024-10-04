@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
-use Yajra\DataTables\Facades\Datatables;
+use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Button;
 
 class UserController extends Controller
@@ -16,34 +16,37 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $this->authorize('viewAny', User::class);
-        
-        if ($request->ajax()) {
-            $query = User::query()->where('status', 'user');
-            return  Datatables::of($query)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a  href="' . Route('dashboard.users.edit', $row->id) . '" class="edit btn btn-success btn-sm">' . __('words.edit') . '</a> 
-                    <a data-bs-toggle="modal" href="#exampleModal" data-id="' .$row->id . '" class="delete btn btn-danger btn-sm">' . __('words.delete') . '</a>';
-                    return $actionBtn;
-                })
-                ->addColumn('status', function($row) {
-                    if ($row->status == 'user') {
+{
+    $this->authorize('viewAny', User::class);
+    
+    if ($request->ajax()) {
+        $query = User::query()->where('status', 'user');
+        return Datatables::of($query)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $actionBtn = '<a href="' . route('dashboard.users.edit', $row->id) . '" class="edit btn btn-success btn-sm">' . __('words.edit') . '</a> 
+                              <a data-bs-toggle="modal" href="#exampleModal" data-id="' . $row->id . '" class="delete btn btn-danger btn-sm">' . __('words.delete') . '</a>';
+                return $actionBtn;
+            })
+            ->addColumn('status', function($row) {
+                switch($row->status) {
+                    case 'user':
                         return __('words.user');
-                    } elseif ($row->status == 'admin') {
+                    case 'admin':
                         return __('words.admin');
-                    } elseif ($row->status == 'writer') {
+                    case 'writer':
                         return __('words.writer');
-                    } else {
+                    default:
                         return 'null';
-                    }
-                })
-                ->rawColumns(['action', 'status'])
-                ->make(true);
-        }
-        return view('dashboard.users.index');
+                }
+            })
+            ->rawColumns(['action', 'status'])
+            ->make(true);
     }
+
+    return view('dashboard.users.index');
+}
+
 
     public function create()
     {

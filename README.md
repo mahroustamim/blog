@@ -62,10 +62,6 @@ $ php artisan serve
 
 
 
-## database schema
-
-![Alt text](https://github.com/mahroustamim/blog/blob/main/blog.drawio.png)
-
 ## License
 
-gym management systeme is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Blog management systeme is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

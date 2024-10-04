@@ -106,44 +106,30 @@
         noDataMessage = "No data available in table";
     @endif
 
-    let table = new DataTable('#mahrous', {
-      processing: true,
-      serverSide: true,
-      responsive: true,
-      // accept:"UTF-8",
-        pagingType: 'simple_numbers',
-        info: false,
-        language: {
-            lengthMenu: x,
-            search: searchPlaceholder + ": ",
-            emptyTable: noDataMessage,
-        },
-        // order: [[1, 'desc']],
-        ajax: "{{ route('dashboard.users.index') }}",
-        columns: [
-          {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false},
-            // {data: 'id', name: 'id'},
-            {data: 'name', name: 'name'},
-            {data: 'email', name: 'email'},
-            {data: 'status', name: 'status'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-    });
-
-    //==============================================
-
-    document.addEventListener('DOMContentLoaded', function () {
-    var exampleModal = document.getElementById('exampleModal');
-    
-    exampleModal.addEventListener('show.bs.modal', function (event) {
-
-        var button = event.relatedTarget;
-        var id = button.getAttribute('data-id');
-        var modalIdInput = exampleModal.querySelector('.modal-body #id');
-
-        modalIdInput.value = id;
-    });
+let table = $('#mahrous').DataTable({
+    processing: true,
+    serverSide: true,
+    responsive: true,
+    pagingType: 'simple_numbers',
+    info: false,
+    ajax: {
+        url: "{{ route('dashboard.users.index') }}",
+        type: 'GET',
+        dataType: 'json',  // Ensure that it expects JSON response
+        error: function(xhr, status, error) {
+            console.error('AJAX Error: ', error);  // Add console logging
+            console.error('XHR Response: ', xhr.responseText);  // Log the response text
+        }
+    },
+    columns: [
+        {data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false},
+        {data: 'name', name: 'name'},
+        {data: 'email', name: 'email'},
+        {data: 'status', name: 'status'},
+        {data: 'action', name: 'action', orderable: false, searchable: false},
+    ]
 });
+
 
 </script>
 
